@@ -2,11 +2,11 @@
   <g-gantt-chart
     :chart-start="chartStart"
     :chart-end="chartEnd"
-    precision="week"
+    precision="hour"
     :row-height="40"
     grid
     current-time
-    width="100%"
+    width="10000%"
     bar-start="beginDate"
     bar-end="endDate"
     :date-format="format"

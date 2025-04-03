@@ -32,6 +32,39 @@
       >
         <slot name="timeunit" :label="label" :value="value" :date="date">
           {{ label }}
+          <div style="background-color: red; width: 100%; position: relative; display: flex">
+            <div
+              v-for="pinIndex in 60"
+              :key="pinIndex"
+              class="g-timeaxis-hour-pin"
+              :style="{
+                background: colors.text,
+                width: '1px',
+                height: '10px',
+                position: 'absolute',
+                top: 0,
+                left: `${(pinIndex - 1) * (100 / 60)}%`,
+
+                marginLeft: 'auto',
+                marginRight: 'auto'
+              }"
+            />
+            <span
+              v-for="pinIndex in 60"
+              :key="`label-${pinIndex}`"
+              :style="{
+                position: 'absolute',
+                top: '-20px',
+                left: `${(pinIndex - 1) * (100 / 60)}%`,
+
+                textAlign: 'center',
+                color: colors.text,
+                fontSize: '7px'
+              }"
+            >
+              {{ pinIndex === 1 ? `` : (pinIndex - 1) * 1 }}
+            </span>
+          </div>
         </slot>
         <div
           v-if="precision === 'hour'"
@@ -52,6 +85,10 @@ const { timeaxisUnits } = useTimeaxisUnits()
 </script>
 
 <style>
+.g-timeaxis-hour-pin {
+  background-color: red;
+  height: 2px;
+}
 .g-timeaxis {
   position: sticky;
   top: 0;

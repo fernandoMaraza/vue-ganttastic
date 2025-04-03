@@ -52,7 +52,6 @@ export default function useTimeaxisUnits() {
     const lowerUnit = lowerPrecision.value
     let currentUpperUnit = chartStartDayjs.value
     let currentLowerUnit = chartStartDayjs.value
-
     while (currentLowerUnit.isSameOrBefore(chartEndDayjs.value)) {
       const endCurrentLowerUnit = currentLowerUnit.endOf(lowerUnit)
       const isLastItem = endCurrentLowerUnit.isAfter(chartEndDayjs.value)
