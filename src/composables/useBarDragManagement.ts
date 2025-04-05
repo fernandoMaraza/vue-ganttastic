@@ -61,18 +61,18 @@ export default function useBarDragManagement() {
       let minuteDiff: number
       switch (overlapType) {
         case "left":
-          minuteDiff = overlapBarEnd.diff(currentBarStart, "minutes", true)
+          minuteDiff = overlapBarEnd.diff(currentBarStart, "seconds", true)
           overlapBar[barEnd.value] = format(currentBar[barStart.value], dateFormat.value)
           overlapBar[barStart.value] = format(
-            overlapBarStart.subtract(minuteDiff, "minutes"),
+            overlapBarStart.subtract(minuteDiff, "seconds"),
             dateFormat.value
           )
           break
         case "right":
-          minuteDiff = currentBarEnd.diff(overlapBarStart, "minutes", true)
+          minuteDiff = currentBarEnd.diff(overlapBarStart, "seconds", true)
           overlapBar[barStart.value] = format(currentBarEnd, dateFormat.value)
           overlapBar[barEnd.value] = format(
-            overlapBarEnd.add(minuteDiff, "minutes"),
+            overlapBarEnd.add(minuteDiff, "seconds"),
             dateFormat.value
           )
           break
@@ -83,13 +83,30 @@ export default function useBarDragManagement() {
           return
       }
       if (overlapBar && (overlapType === "left" || overlapType === "right")) {
-        moveBundleOfPushedBarByMinutes(overlapBar, minuteDiff, overlapType)
+        moveBundleOfPushedBarBySeconds(overlapBar, minuteDiff, overlapType)
       }
       currentBar = overlapBar
       ;({ overlapBar, overlapType } = getOverlapBarAndType(overlapBar))
     }
   }
-
+  const moveBundleOfPushedBarBySeconds = (
+    pushedBar: GanttBarObject,
+    seconds: number,
+    direction: "left" | "right"
+  ) => {
+    addBarToMovedBars(pushedBar)
+    if (!pushedBar.ganttBarConfig.bundle) {
+      return
+    }
+    getChartRows().forEach((row) => {
+      row.bars.forEach((bar) => {
+        if (bar.ganttBarConfig.bundle === pushedBar.ganttBarConfig.bundle && bar !== pushedBar) {
+          addBarToMovedBars(bar)
+          moveBarBySeconds(bar, seconds, direction)
+        }
+      })
+    })
+  }
   const getOverlapBarAndType = (ganttBar: GanttBarObject) => {
     let overlapLeft, overlapRight, overlapInBetween
     const allBarsInRow = getChartRows().find((row) => row.bars.includes(ganttBar))?.bars ?? []
@@ -158,7 +175,27 @@ export default function useBarDragManagement() {
     }
     fixOverlaps(bar)
   }
-
+  const moveBarBySeconds = (bar: GanttBarObject, seconds: number, direction: "left" | "right") => {
+    switch (direction) {
+      case "left":
+        bar[barStart.value] = format(
+          toDayjs(bar, "start").subtract(seconds, "seconds"),
+          dateFormat.value
+        )
+        bar[barEnd.value] = format(
+          toDayjs(bar, "end").subtract(seconds, "seconds"),
+          dateFormat.value
+        )
+        break
+      case "right":
+        bar[barStart.value] = format(
+          toDayjs(bar, "start").add(seconds, "seconds"),
+          dateFormat.value
+        )
+        bar[barEnd.value] = format(toDayjs(bar, "end").add(seconds, "seconds"), dateFormat.value)
+    }
+    fixOverlaps(bar)
+  }
   const onEndDrag = (e: MouseEvent, bar: GanttBarObject) => {
     snapBackAllMovedBarsIfNeeded()
     const ev = {

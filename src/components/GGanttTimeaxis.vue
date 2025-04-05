@@ -32,7 +32,7 @@
       >
         <slot name="timeunit" :label="label" :value="value" :date="date">
           {{ label }}
-          <div style="background-color: red; width: 100%; position: relative; display: flex">
+          <div v-show="isActiveInSeconds" style="width: 100%; position: relative; display: flex">
             <div
               v-for="pinIndex in 60"
               :key="pinIndex"
@@ -56,7 +56,6 @@
                 position: 'absolute',
                 top: '-20px',
                 left: `${(pinIndex - 1) * (100 / 60)}%`,
-
                 textAlign: 'center',
                 color: colors.text,
                 fontSize: '7px'
@@ -64,6 +63,36 @@
             >
               {{ pinIndex === 1 ? `` : (pinIndex - 1) * 1 }}
             </span>
+            <div
+              v-for="secIndexSecond in 3600"
+              :key="secIndexSecond"
+              class="g-timeaxis-second-pin"
+              :style="{
+                zIndex: 99,
+                justifyContent: 'space-between',
+                background: '#fffff',
+                width: '1px',
+                height: '5px',
+                position: 'absolute',
+                top: '10px',
+                left: `${(secIndexSecond - 1) * (100 / 3600)}%`,
+                marginLeft: 'auto',
+                marginRight: 'auto'
+              }"
+            >
+              <span
+                :style="{
+                  position: 'absolute',
+                  top: '-10px',
+                  left: `${(secIndexSecond - 1) * (100 / 3600)}%`,
+                  textAlign: 'center',
+                  color: '#fffff',
+                  fontSize: '7px'
+                }"
+              >
+                {{ (secIndexSecond - 1) % 60 !== 0 ? (secIndexSecond - 1) % 60 : "" }}
+              </span>
+            </div>
           </div>
         </slot>
         <div
@@ -79,7 +108,9 @@
 <script setup lang="ts">
 import provideConfig from "../provider/provideConfig.js"
 import useTimeaxisUnits from "../composables/useTimeaxisUnits.js"
-
+defineProps<{
+  isActiveInSeconds?: boolean
+}>()
 const { precision, colors } = provideConfig()
 const { timeaxisUnits } = useTimeaxisUnits()
 </script>
@@ -88,6 +119,10 @@ const { timeaxisUnits } = useTimeaxisUnits()
 .g-timeaxis-hour-pin {
   background-color: red;
   height: 2px;
+}
+.g-timeaxis-second-pin {
+  background-color: blue; /* Color de las marcas de segundos */
+  height: 5px; /* Altura ajustable */
 }
 .g-timeaxis {
   position: sticky;

@@ -69,7 +69,7 @@ This will globally register the components g-gantt-chart and g-gantt-row and you
 
   const row1BarList = ref([
     {
-      myBeginDate: "2021-07-13 13:00",
+      myBeginDate: "2021-07-13 13:01",
       myEndDate: "2021-07-13 19:00",
       ganttBarConfig: {
         // each bar must have a nested ganttBarConfig object ...

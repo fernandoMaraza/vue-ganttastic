@@ -6,7 +6,7 @@
     :row-height="40"
     grid
     current-time
-    width="10000%"
+    :width="widthDinamic()"
     bar-start="beginDate"
     bar-end="endDate"
     :date-format="format"
@@ -32,26 +32,44 @@
 
   <button type="button" @click="addBar()">Add bar</button>
   <button type="button" @click="deleteBar()">Delete bar</button>
+  <label>
+    <input type="checkbox" v-model="isWide" />
+    Toggle Width
+  </label>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue"
 import type { GanttBarObject } from "./types"
 import dayjs from "dayjs"
-
-const format = ref("DD.MM.YYYY HH:mm")
+const isWide = ref(false)
+const format = ref("DD.MM.YYYY HH:mm:ss.SSS")
 const chartStart = ref(dayjs().startOf("day").format(format.value))
 const chartEnd = ref(
   dayjs(chartStart.value, format.value).add(3, "days").hour(12).format(format.value)
 )
-
+const widthDinamic = (): string => {
+  return isWide.value ? "200000%" : "100%"
+}
 const bars1 = ref<GanttBarObject[]>([
   {
-    beginDate: dayjs().hour(13).startOf("hour").format(format.value),
-    endDate: dayjs().hour(19).startOf("hour").format(format.value),
+    beginDate: dayjs()
+      .hour(12)
+      .minute(0)
+      .second(30)
+      .millisecond(500)
+      .startOf("milliseconds")
+      .format(format.value),
+    endDate: dayjs()
+      .hour(19)
+      .minute(0)
+      .second(30)
+      .millisecond(500)
+      .startOf("milliseconds")
+      .format(format.value),
     ganttBarConfig: {
       id: "8621987329",
-      label: "I'm in a bundle",
+      label: "I'm in a bundleg",
       bundle: "bundle2"
     }
   }
@@ -59,8 +77,20 @@ const bars1 = ref<GanttBarObject[]>([
 
 const bars2 = ref([
   {
-    beginDate: dayjs().hour(13).startOf("hour").format(format.value),
-    endDate: dayjs().hour(19).startOf("hour").format(format.value),
+    beginDate: dayjs()
+      .hour(12)
+      .minute(0)
+      .second(30)
+      .millisecond(500)
+      .startOf("milliseconds")
+      .format(format.value),
+    endDate: dayjs()
+      .hour(19)
+      .minute(0)
+      .second(30)
+      .millisecond(500)
+      .startOf("milliseconds")
+      .format(format.value),
     ganttBarConfig: {
       id: "1592311887",
       label: "I'm in a bundle",
@@ -100,8 +130,8 @@ const bars2 = ref([
 
 const bars3 = [
   {
-    beginDate: "15.01.2024 08:30",
-    endDate: "20.02.2024 16:45",
+    beginDate: "15.01.2024 08:30:12",
+    endDate: "20.02.2024 16:45:33",
     ganttBarConfig: {
       id: "9876543210",
       label: "Updated Bundle",
@@ -112,8 +142,8 @@ const bars3 = [
     }
   },
   {
-    beginDate: "20.02.2024 12:00",
-    endDate: "10.03.2024 18:30",
+    beginDate: "20.02.2024 12:00:22",
+    endDate: "10.03.2024 18:30:33",
     ganttBarConfig: {
       id: "1234567890",
       label: "New Task",
@@ -124,8 +154,8 @@ const bars3 = [
     }
   },
   {
-    beginDate: "25.04.2024 09:15",
-    endDate: "30.04.2024 21:00",
+    beginDate: "25.04.2024 09:15:12",
+    endDate: "30.04.2024 21:00:12",
     ganttBarConfig: {
       id: "2468135790",
       label: "Greetings",
@@ -141,8 +171,8 @@ const bars3 = [
 
 const bars4 = [
   {
-    beginDate: "10.01.2024 08:00",
-    endDate: "15.03.2024 16:30",
+    beginDate: "10.01.2024 08:00:23",
+    endDate: "15.03.2024 16:30:32",
     ganttBarConfig: {
       id: "9876543210",
       label: "Novo Pacote",
@@ -153,8 +183,8 @@ const bars4 = [
     }
   },
   {
-    beginDate: "05.03.2024 10:00",
-    endDate: "15.04.2024 22:15",
+    beginDate: "05.03.2024 10:00:32",
+    endDate: "15.04.2024 22:15:32",
     ganttBarConfig: {
       id: "2468135790",
       label: "hello folks",

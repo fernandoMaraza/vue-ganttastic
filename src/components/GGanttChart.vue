@@ -19,7 +19,7 @@
         :class="['g-gantt-chart', { 'with-column': labelColumnTitle }]"
         :style="{ width, background: colors.background, fontFamily: font }"
       >
-        <g-gantt-timeaxis v-if="!hideTimeaxis">
+        <g-gantt-timeaxis :is-active-in-seconds="isActiveInSeconds" v-if="!hideTimeaxis">
           <template #upper-timeunit="{ label, value, date }">
             <!-- expose upper-timeunit slot of g-gantt-timeaxis-->
             <slot name="upper-timeunit" :label="label" :value="value" :date="date" />
@@ -154,6 +154,10 @@ const emit = defineEmits<{
 }>()
 
 const { width, font, colorScheme } = toRefs(props)
+const isActiveInSeconds = computed(() => {
+  const widthValue = parseFloat(width.value)
+  return widthValue > 500 ? true : false
+})
 
 const slots = useSlots()
 const colors = computed(() =>

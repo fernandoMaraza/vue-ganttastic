@@ -5,7 +5,7 @@ import type { GGanttChartConfig } from "../components/GGanttChart.vue"
 import type { GanttBarObject } from "../types"
 import provideConfig from "../provider/provideConfig.js"
 
-export const DEFAULT_DATE_FORMAT = "YYYY-MM-DD HH:mm"
+export const DEFAULT_DATE_FORMAT = "YYYY-MM-DD HH:mm:ss"
 
 export default function useDayjsHelper(config: GGanttChartConfig = provideConfig()) {
   const { chartStart, chartEnd, barStart, barEnd, dateFormat } = config

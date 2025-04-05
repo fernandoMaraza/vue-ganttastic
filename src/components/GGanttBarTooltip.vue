@@ -27,8 +27,8 @@ import useDayjsHelper from "../composables/useDayjsHelper.js"
 import provideConfig from "../provider/provideConfig.js"
 
 const TOOLTIP_FORMATS = {
-  hour: "HH:mm",
-  day: "DD. MMM HH:mm",
+  hour: "HH:mm:ss.SSS",
+  day: "DD. MMM HH:mm:ss.SSS",
   date: "DD. MMMM YYYY",
   month: "DD. MMMM YYYY",
   week: "DD. MMMM YYYY (WW)"

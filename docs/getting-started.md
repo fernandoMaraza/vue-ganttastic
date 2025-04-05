@@ -44,7 +44,7 @@ import { ref } from "vue"
 
 const row1BarList = ref([
   {
-    myBeginDate: "2021-07-13 13:00",
+    myBeginDate: "2021-07-13 13:01",
     myEndDate: "2021-07-13 19:00",
     ganttBarConfig: {
       // each bar must have a nested ganttBarConfig object ...
