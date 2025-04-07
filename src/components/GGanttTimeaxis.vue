@@ -32,21 +32,16 @@
       >
         <slot name="timeunit" :label="label" :value="value" :date="date">
           {{ label }}
-          <div v-show="isActiveInSeconds" style="width: 100%; position: relative; display: flex">
+          <div v-if="isActiveInSeconds" style="width: 100%; position: relative; display: flex">
             <div
               v-for="pinIndex in 60"
               :key="pinIndex"
               class="g-timeaxis-hour-pin"
               :style="{
                 background: colors.text,
-                width: '1px',
-                height: '10px',
                 position: 'absolute',
                 top: 0,
-                left: `${(pinIndex - 1) * (100 / 60)}%`,
-
-                marginLeft: 'auto',
-                marginRight: 'auto'
+                left: `${(pinIndex - 1) * (100 / 60)}%`
               }"
             />
             <span
@@ -68,29 +63,16 @@
               :key="secIndexSecond"
               class="g-timeaxis-second-pin"
               :style="{
-                zIndex: 99,
-                justifyContent: 'space-between',
-                background: '#fffff',
-                width: '1px',
-                height: '5px',
-                position: 'absolute',
-                top: '10px',
-                left: `${(secIndexSecond - 1) * (100 / 3600)}%`,
-                marginLeft: 'auto',
-                marginRight: 'auto'
+                left: `${(secIndexSecond - 1) * (100 / 3600)}%`
               }"
             >
               <span
+                v-if="(secIndexSecond - 1) % 15 === 0"
                 :style="{
-                  position: 'absolute',
-                  top: '-10px',
-                  left: `${(secIndexSecond - 1) * (100 / 3600)}%`,
-                  textAlign: 'center',
-                  color: '#fffff',
-                  fontSize: '7px'
+                  left: `${(secIndexSecond - 1) * (100 / 3600)}%`
                 }"
               >
-                {{ (secIndexSecond - 1) % 60 !== 0 ? (secIndexSecond - 1) % 60 : "" }}
+                {{ (secIndexSecond - 1) % 60 === 0 ? "" : (secIndexSecond - 1) % 60 }}
               </span>
             </div>
           </div>
@@ -116,13 +98,20 @@ const { timeaxisUnits } = useTimeaxisUnits()
 </script>
 
 <style>
-.g-timeaxis-hour-pin {
-  background-color: red;
-  height: 2px;
-}
 .g-timeaxis-second-pin {
-  background-color: blue; /* Color de las marcas de segundos */
-  height: 5px; /* Altura ajustable */
+  background-color: blue;
+  justify-content: space-between;
+  height: 5px;
+  width: 1px;
+  position: absolute;
+  font-size: 7px;
+}
+.g-timeaxis-second-pin span {
+  position: absolute;
+  top: -10px;
+  text-align: center;
+  color: "#fffff";
+  font-size: 7px;
 }
 .g-timeaxis {
   position: sticky;
