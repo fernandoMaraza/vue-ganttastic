@@ -31,7 +31,10 @@
         }"
       >
         <slot name="timeunit" :label="label" :value="value" :date="date">
-          {{ label }}
+          <strong v-if="isActiveInSeconds">
+            {{ label }}
+          </strong>
+          <span v-else>{{ label }}</span>
           <div v-if="isActiveInSeconds" style="width: 100%; position: relative; display: flex">
             <div
               v-for="pinIndex in 60"
