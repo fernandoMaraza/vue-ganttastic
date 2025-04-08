@@ -102,7 +102,7 @@ const { timeaxisUnits } = useTimeaxisUnits()
 
 <style>
 .g-timeaxis-second-pin {
-  background-color: blue;
+  background-color: "#fffff";
   justify-content: space-between;
   height: 5px;
   width: 1px;
