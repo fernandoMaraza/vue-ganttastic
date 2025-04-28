@@ -62,7 +62,7 @@
               {{ pinIndex === 1 ? `` : (pinIndex - 1) * 1 }}
             </span>
             <div
-              v-for="secIndexSecond in 3600"
+              v-for="secIndexSecond in filteredSeconds"
               :key="secIndexSecond"
               class="g-timeaxis-second-pin"
               :style="{
@@ -70,7 +70,6 @@
               }"
             >
               <span
-                v-if="(secIndexSecond - 1) % 15 === 0"
                 :style="{
                   left: `${(secIndexSecond - 1) * (100 / 3600)}%`
                 }"
@@ -93,16 +92,23 @@
 <script setup lang="ts">
 import provideConfig from "../provider/provideConfig.js"
 import useTimeaxisUnits from "../composables/useTimeaxisUnits.js"
+import { computed } from "vue"
 defineProps<{
   isActiveInSeconds?: boolean
 }>()
 const { precision, colors } = provideConfig()
 const { timeaxisUnits } = useTimeaxisUnits()
+const filteredSeconds = computed(() => {
+  const totalSeconds = 3600
+  return Array.from({ length: totalSeconds }, (_, secIndex) => secIndex + 1).filter(
+    (secIndexSecond) => (secIndexSecond - 1) % 15 === 0
+  )
+})
 </script>
 
 <style>
 .g-timeaxis-second-pin {
-  background-color: "#fffff";
+  background-color: #888;
   justify-content: space-between;
   height: 5px;
   width: 1px;
